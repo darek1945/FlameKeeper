@@ -1,0 +1,42 @@
+version: '3'
+services:
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus:/etc/prometheus
+    ports:
+      - 9090:9090
+
+  pushgateway:
+    image: prom/pushgateway
+    ports:
+      - 9091:9091
+  
+  blackbox_exporter:
+    image: prom/blackbox-exporter
+    volumes:
+      - ./blackbox:/etc/blackbox_exporter
+    ports:
+      - 9115:9115
+
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=TwojeHaslo # change this
+    ports:
+      - 80:3000
+    depends_on:
+      - prometheus
+
+  speedtest_cli:
+    build: ./speedtest-cli
+    environment:
+      SPEEDTEST_INTERVAL: "1200"
+    depends_on:
+      - prometheus
+      - pushgateway
+
+volumes:
+  grafana-storage:
