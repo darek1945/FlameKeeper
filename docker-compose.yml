@@ -38,5 +38,14 @@ services:
       - prometheus
       - pushgateway
 
+  node_exporter:
+    image: prom/node-exporter
+    volumes:
+      - "/:/host:ro,rslave"
+    command:
+      - '--path.rootfs=/host'
+    ports:
+      - 9100:9100
+
 volumes:
   grafana-storage:
