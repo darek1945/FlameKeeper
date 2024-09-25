@@ -1,0 +1,12 @@
+services:
+  bbqq-prometheus:
+    build: ./prometheus
+    image: docker.bbqq.pl:8666/bbqq-prometheus:latest
+
+  bbqq-speedtest:
+    build: ./speedtest-cli
+    image: docker.bbqq.pl:8666/bbqq-speedtest:latest
+
+  bbqq-blackbox_exporter:
+    build: ./blackbox
+    image: docker.bbqq.pl:8666/bbqq-blackbox_exporter:latest

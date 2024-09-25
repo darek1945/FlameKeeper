@@ -1,9 +1,6 @@
-version: '3'
 services:
   prometheus:
-    image: prom/prometheus
-    volumes:
-      - ./prometheus:/etc/prometheus
+    image: docker.bbqq.pl:8666/bbqq-prometheus
     ports:
       - 9090:9090
 
@@ -13,9 +10,7 @@ services:
       - 9091:9091
   
   blackbox_exporter:
-    image: prom/blackbox-exporter
-    volumes:
-      - ./blackbox:/etc/blackbox_exporter
+    image: docker.bbqq.pl:8666/bbqq-blackbox_exporter
     ports:
       - 9115:9115
 
@@ -31,21 +26,12 @@ services:
       - prometheus
 
   speedtest_cli:
-    build: ./speedtest-cli
+    image: docker.bbqq.pl:8666/bbqq-speedtest
     environment:
       SPEEDTEST_INTERVAL: "1200"
     depends_on:
       - prometheus
       - pushgateway
-
-  node_exporter:
-    image: prom/node-exporter
-    volumes:
-      - "/:/host:ro,rslave"
-    command:
-      - '--path.rootfs=/host'
-    ports:
-      - 9100:9100
 
 volumes:
   grafana-storage:
